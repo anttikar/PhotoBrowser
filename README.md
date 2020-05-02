@@ -30,6 +30,24 @@ To run the app, follow these steps.
   jspm install -y
   ```
   >**Note:** Windows users, if you experience an error of "unknown command unzip" you can solve this problem by doing `npm install -g unzip` and then re-running `jspm install`.
+
+5.5. Fix "ReferenceError: primordials is not defined" in node
+
+Fixed version problem between node and gulp like this:
+https://stackoverflow.com/questions/55921442/how-to-fix-referenceerror-primordials-is-not-defined-in-node
+
+You need to modify your package.json this way:
+{
+  // Your current package.json
+  "scripts": {
+    // Your current package.json scripts
+    "preinstall": "npx npm-force-resolutions"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.3"
+  }
+}
+
 6. To run the app, execute the following command:
 
   ```shell
@@ -114,7 +132,7 @@ To run the app under [Electron](http://electron.atom.io), follow these steps.
   ```shell
   npm install electron-packager -g
   ```
-  
+
 3. Run the command:
 
   ```shell

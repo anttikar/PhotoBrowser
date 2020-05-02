@@ -19,8 +19,12 @@
     "url": "http://github.com/aurelia/skeleton-navigation"
   },
   "scripts": {
+    "preinstall": "npx npm-force-resolutions",
     "test": "gulp test",
     "e2e": "gulp serve webdriver-standalone e2e"
+  },
+  "resolutions": {
+    "graceful-fs": "4.2.3"
   },
   "devDependencies": {
     "aurelia-bundler": "^0.4.0",
