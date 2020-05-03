@@ -3,9 +3,7 @@ import {HttpClient} from 'aurelia-fetch-client';
 import 'fetch';
 
 @inject(HttpClient)
-export class Users {
-  heading = 'Github Users';
-  users = [];
+export class PhotoBrowser {
 
   constructor(http) {
     http.configure(config => {
@@ -15,11 +13,16 @@ export class Users {
     });
 
     this.http = http;
+
+    this.heading = 'Photos';
+    this.users = [];
   }
 
   activate() {
     return this.http.fetch('users')
       .then(response => response.json())
-      .then(users => this.users = users);
+      .then(users => {
+        this.users = users;
+      });
   }
 }
