@@ -14,7 +14,7 @@ export default class RestService {
     this.http.configure(config => {
       config
         .useStandardConfiguration()
-        .withBaseUrl('https://api.github.com/')
+        .withBaseUrl('https://jsonplaceholder.typicode.com/')
         .withInterceptor({
           request(request) {
             return request;

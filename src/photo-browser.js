@@ -8,14 +8,22 @@ export class PhotoBrowser {
     this.restApi = RestService;
 
     this.heading = 'Photos';
-    this.users = [];
+    this.photos = [];
   }
 
   activate() {
-    return this.restApi.fetch('users')
+
+    return this.restApi.get('photos')
       .then(response => response.json())
-      .then(users => {
-        this.users = users;
+      .then(photos => {
+
+        // Temp limit to show only 20 photos
+        let somePhotos = [];
+        for (let i = 0; i < 20; i++) {
+          somePhotos.push(photos[i]);
+        }
+
+        this.photos = somePhotos;
       });
   }
 

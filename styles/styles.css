@@ -173,3 +173,8 @@ div.au-stagger {
     opacity: 1;
   }
 }
+
+
+div.thumbnail-photo-row {
+  margin-bottom: 10px;
+}
