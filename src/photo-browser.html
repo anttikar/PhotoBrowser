@@ -7,7 +7,9 @@
 
       <div class="col-sm-6 col-md-3 card-container au-animate" repeat.for="photo of photos">
         <div class="thumbnail-photo-row">
-          <img src.bind="photo.thumbnailUrl"/>
+          <a route-href="route: photo-viewer; params.bind: {id: photo.id}">
+            <img src.bind="photo.thumbnailUrl"/>
+          </a>
         </div>
       </div>
 

@@ -12,7 +12,6 @@ export class PhotoBrowser {
   }
 
   activate() {
-
     return this.restApi.get('photos')
       .then(response => response.json())
       .then(photos => {
