@@ -1,28 +1,22 @@
 import {inject} from 'aurelia-framework';
-import {HttpClient} from 'aurelia-fetch-client';
-import 'fetch';
+import RestService from './services/RestService';
 
-@inject(HttpClient)
+@inject(RestService)
 export class PhotoBrowser {
 
-  constructor(http) {
-    http.configure(config => {
-      config
-        .useStandardConfiguration()
-        .withBaseUrl('https://api.github.com/');
-    });
-
-    this.http = http;
+  constructor(RestService) {
+    this.restApi = RestService;
 
     this.heading = 'Photos';
     this.users = [];
   }
 
   activate() {
-    return this.http.fetch('users')
+    return this.restApi.fetch('users')
       .then(response => response.json())
       .then(users => {
         this.users = users;
       });
   }
+
 }
