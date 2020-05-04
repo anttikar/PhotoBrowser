@@ -1,14 +1,14 @@
 <template>
   <require from="blur-image"></require>
 
-  <section class="au-animate">
+  <section>
     <h2>${heading}</h2>
     <div class="row au-stagger">
 
-      <div class="col-sm-6 col-md-3 card-container au-animate" repeat.for="photo of photos">
+      <div class="col-sm-6 col-md-3" repeat.for="photo of photos">
         <div class="thumbnail-photo-row">
           <a route-href="route: photo-viewer; params.bind: {id: photo.id}">
-            <img src.bind="photo.thumbnailUrl"/>
+            <img src.bind="photo.thumbnailUrl" class="thumbnail-image"/>
           </a>
         </div>
       </div>
