@@ -72,3 +72,7 @@ img.thumbnail-image {
   border: none;
   background: none;
 }
+
+#infiniteScrollDiv {
+  min-height: 50px
+}
