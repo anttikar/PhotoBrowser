@@ -3,8 +3,8 @@
 
   <section>
     <h2>${heading}</h2>
+    
     <div class="row au-stagger">
-
       <div class="col-sm-6 col-md-3" repeat.for="photo of photos">
         <div class="thumbnail-photo-row">
           <a route-href="route: photo-viewer; params.bind: {id: photo.id}">
@@ -12,7 +12,6 @@
           </a>
         </div>
       </div>
-
     </div>
   </section>
 </template>
