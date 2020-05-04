@@ -66,3 +66,9 @@ img.thumbnail-image {
   position: fixed;
   background-color: black;
 }
+
+.close-button {
+  margin: 10px;
+  border: none;
+  background: none;
+}
