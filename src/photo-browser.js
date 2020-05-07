@@ -1,4 +1,6 @@
 import {inject} from 'aurelia-framework';
+import {Container} from 'aurelia-framework';
+import {App} from 'app';
 import RestService from './services/RestService';
 
 @inject(RestService)
@@ -6,15 +8,23 @@ export class PhotoBrowser {
 
   constructor(RestService) {
     this.restApi = RestService;
+    this.app = Container.instance.get(App);
 
     this.photos = [];
-    this.page_index = 1;
-    this.page_limit = 20;
+    this.pageIndex = 1;
+    this.pageLimit = 20;
     this.loadingMoreImages = false;
   }
 
-  activate() {
-    return this.fetchImages();
+  created() {
+    // Get possible already loaded photos from App
+    this.photos = this.app.photoBrowserData.photos;
+    this.pageIndex = this.app.photoBrowserData.pageIndex;
+
+    // If no photos already loaded, then load first page of photos
+    if (this.photos.length === 0) {
+      return this.fetchImages();
+    }
   }
 
   attached() {
@@ -22,10 +32,27 @@ export class PhotoBrowser {
     this.addScrollEventListener();
   }
 
-  detached() {
+  bind() {
+    // Return to possible saved scroll position
+    let self = this;
+    if (this.app.photoBrowserData.scrollPosition !== undefined) {
+      // Timeout needed to wait until the view is ready for scrolling
+      setTimeout(() => {
+        $('.page-host').scrollTop(self.app.photoBrowserData.scrollPosition);
+      }, 200);
+    }
+  }
+
+  canDeactivate() {
+    // Save scroll position for returning to same position
+    this.app.photoBrowserData.scrollPosition = $('.page-host').scrollTop();
+  }
+
+  unbind() {
     // Remove listener
     $('.page-host').unbind('scroll');
   }
+
 
   /*
    * Add scroll event listener to fire image fetching for infinite scrolling
@@ -33,11 +60,12 @@ export class PhotoBrowser {
   addScrollEventListener() {
     let self = this;
     let scrollTimer = null;
-    $('.page-host').scroll(function() {
+    $('.page-host').scroll(() => {
       if (scrollTimer) {
         clearTimeout(scrollTimer);   // Clear any previous pending timer
       }
-      scrollTimer = setTimeout(function() {
+      scrollTimer = setTimeout(() => {
+        // If infinite scroll div is visible, then load more photos
         if ($('#infiniteScrollDiv').offset().top < window.innerHeight) {
           self.loadMoreImages();
         }
@@ -53,7 +81,9 @@ export class PhotoBrowser {
     this.loadingMoreImages = true;
 
     // Get next page of images
-    this.page_index += 1;
+    this.pageIndex += 1;
+    this.app.photoBrowserData.pageIndex = this.pageIndex;
+
     this.fetchImages();
   }
 
@@ -63,8 +93,8 @@ export class PhotoBrowser {
   fetchImages() {
     // Get URL with parameters
     let url = 'photos?';
-    url += '_page=' + this.page_index;
-    url += '&_limit=' + this.page_limit;
+    url += '_page=' + this.pageIndex;
+    url += '&_limit=' + this.pageLimit;
 
     // Fetch photos
     return this.restApi.get(url)

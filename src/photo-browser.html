@@ -4,7 +4,7 @@
     <div id="photoGrid" class="row">
       <div class="col-sm-6 col-md-3" repeat.for="photo of photos">
         <div class="thumbnail-photo-row">
-          <a route-href="route: photo-viewer; params.bind: {id: photo.id}">
+          <a route-href="route: photo; params.bind: {id: photo.id}">
             <img src.bind="photo.thumbnailUrl" class="thumbnail-image"/>
           </a>
         </div>
