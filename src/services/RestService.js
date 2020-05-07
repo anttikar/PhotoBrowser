@@ -1,5 +1,5 @@
-import { Aurelia, inject, singleton, noView } from 'aurelia-framework';
-import { HttpClient } from 'aurelia-fetch-client';
+import {Aurelia, inject, singleton, noView} from 'aurelia-framework';
+import {HttpClient} from 'aurelia-fetch-client';
 import 'fetch';
 
 @inject(Aurelia, HttpClient)
@@ -16,12 +16,6 @@ export default class RestService {
         .useStandardConfiguration()
         .withBaseUrl('https://jsonplaceholder.typicode.com/')
         .withInterceptor({
-          request(request) {
-            return request;
-          },
-          requestError(request) {
-            return request;
-          },
           response(response) {
             return response;
           },
@@ -30,13 +24,6 @@ export default class RestService {
           }
         });
     });
-  }
-
-  /**
-   * Http fetch without any params
-   */
-  fetch(url) {
-    return this.fetchData(url);
   }
 
   /**
@@ -58,6 +45,7 @@ export default class RestService {
       let fetchPromise = this.http.fetch(url, params);
       let timeout = this.getFetchTimeout();
 
+      // Get HTTP response ot possible timeout
       return Promise.race([timeout, fetchPromise])
         .then(response => {
           return this.checkResponseStatus(response)
@@ -77,16 +65,17 @@ export default class RestService {
   }
 
   /**
-   * Check response status and possible timeout
+   * Check response status and possible timeout. Resolve or Reject Promise.
    */
-  checkResponseStatus( response ) {
+  checkResponseStatus(response) {
     if (response instanceof Response) {
       if (response.status >= 200 && response.status < 400) {
         return Promise.resolve(response);
       } else {
-        return response.json().then(responseJson => {
-          return Promise.reject(responseJson);
-        });
+        return response.json()
+          .then(responseJson => {
+            return Promise.reject(responseJson);
+          });
       }
     } else {
       return Promise.reject('timeout');
