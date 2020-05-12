@@ -17,6 +17,8 @@ export class PhotoViewer {
         .then(response => response.json())
         .then(photo => {
           this.photo = photo;
+        }).catch(e => {
+          console.log(e);
         });
   }
 
